@@ -1,0 +1,130 @@
+# 사전 정의된 전역 변수 사용여부를 정의함. (e.g. console, require같은 사전 정의된 전역변수 환경에 있는 static 메서드에 대해..)
+env:
+  browser: true
+  es2021: true
+  node: true
+
+# typescript 구문 분석을 위해 @typescript-eslint/parser 설정
+# parser: '@typescript-eslint/parser'
+parser: 'babel-eslint'
+
+# parserOption : EsLint 사용을 위해 지원하려는 Javascript 언어 옵션을 지정할 수 있음.
+parserOptions:
+  ecmaFeatures:                                                                                 # ECMAScript의 언어 확장 기능을 설정
+    jsx: true                                                                                   # ECMAScript 규격의 jsx 사용 여부 설정
+  ecmaVersion: 12                                                                               # ECMAScript 버전 설정
+  sourceType: module                                                                            # parser의 export 형태를 설정
+  # project: './tsconfig.json'
+
+# 3rd-party plugin 설정
+plugins:
+  - react                                                                                       # react linting plugin  (eslint-plugin-react)
+  - react-hooks                                                                                 # react-hook linting plugin (eslint-plugin-react-hooks)
+  - '@typescript-eslint'                                                                        # typescript linting plugin
+
+overrides: [
+  {
+    files: ['*.ts', '*.tsx'],
+    parser: '@typescript-eslint/parser',
+    extends: ['plugin:@typescript-eslint/recommended'],
+    rules: {
+      '@typescript-eslint/no-use-before-define': 'error',                                       # typescript에 대해 설정 (실질적으로 no-use-before-define rule에 어긋나는 부분만 보여줌)
+      '@typescript-eslint/no-namespace': 'off',                                                 # typescript namespace 허용
+      '@typescript-eslint/no-empty-function': 'warn',                                          # typescript function이 내용이 없을 경우 주의
+      '@typescript-eslint/no-var-requires': 'warn',
+    }
+  }
+]
+
+# 추가한 plugin에서 사용할 규칙을 설정
+extends:
+  - airbnb
+  - 'plugin:react/recommended'
+  - 'prettier'
+  - 'plugin:prettier/recommended'
+
+rules:
+  # default eslint (with typescript)
+  eqeqeq: 'error'                                                                               # === 로만 비교 (== 는 안됨)
+  no-unused-vars: 'warn'                                                                        # 사용하지 않는 변수가 있을 경우 주의
+  no-use-before-define: 'off'                                                                   # 정의 전 사용 불가 ('import React ...'에서 에러나는 부분이 있어서, 기본 룰은 off 처리)
+  no-redeclare: 'error'                                                                         # 재정의 불가
+  no-console: 'off'                                                                             # console 함수 사용에 문제없게끔 함.
+  no-useless-constructor: 'warn'                                                                # 안쓰는 class constructor 주의
+  no-shadow: 'warn'                                                                             # 서로 다른 scope에서 동일한 이름의 변수 사용시 주의
+  no-var: 'error'                                                                               # var 사용 금지
+  one-var: 'off'
+  no-empty-pattern: 'warn'
+  spaced-comment: 'off'
+  lines-between-class-members: 'off'
+  global-require: 'off'
+  no-param-reassign: 'off'
+  no-await-in-loop: 'off'
+  no-nested-ternary: 'warn'
+  no-extend-native: 'off'
+  func-names: 'off'
+  no-unused-expressions: 'warn'
+
+  # jsx-a11y
+  jsx-a11y/label-has-associated-control: 'off'
+
+  # react
+  react/jsx-filename-extension:                                                                 # react jsx 파일 확장자 설정
+    - 'error'
+    - extensions:
+        - '.js'
+        - '.jsx'
+        - '.ts'
+        - '.tsx'
+  react/button-has-type: 'off'
+  react/require-default-props: 'off'
+  react/no-unused-prop-types: 'warn'                                                            # 사용하지 않는 props type이 있을 경우 주의
+  react/jsx-props-no-spreading: 'off'
+
+  # react-hooks
+  react-hooks/rules-of-hooks: 'error'                                                           # Checks rules of Hooks
+  react-hooks/exhaustive-deps: 'error'                                                          # Checks effect dependencies
+  
+  # prettier
+  prettier/prettier:
+    - 'error'
+    - endOfLine: 'auto'                                                                         # Delete `␍` 해결
+  
+  # import
+  import/first: 'off'
+  import/prefer-default-export: 'off'
+  import/extensions:
+    - 'error'
+    - 'never'
+    -
+      svg: 'always'
+      scss: 'always'
+  import/no-extraneous-dependencies:
+    - 'error'
+    - devDependencies: true                                                                     # electron 등 devDependency에 잡히는 모듈에 대해 설정하기 위함.
+
+
+ignorePatterns:
+  - 'build'
+  - 'node_modules'
+  - '*.yml'
+  - '.gitignore'
+  - '.prettierignore'
+  - 'public/**/*.js'                                                                               
+  - 'src/**/*.js'                                                                                  
+  - '*.config.js'
+
+settings:
+  react:
+    version: 'detect'
+  import/resolver:
+    node:
+      extensions:
+        - '.js'
+        - '.jsx'
+        - '.ts'
+        - '.tsx'
+        - '.d.ts'
+      moduleDirectory:
+        - 'node_modules'
+        - 'src/'
