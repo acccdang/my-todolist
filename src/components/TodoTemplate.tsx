@@ -8,6 +8,7 @@ type TodoTemplateProps = {
 const StyledTodoTemplate = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   position: relative;
   width: 60vh;
   height: 80vh;

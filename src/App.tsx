@@ -1,6 +1,10 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 import TodoTemplate from "./components/TodoTemplate";
+import TodoHeader from "./components/TodoHeader";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+import AddTodoButton from "./components/AddTodoButton";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Roboto&display=swap');
@@ -19,7 +23,13 @@ function App(): React.ReactElement {
   return (
     <>
       <GlobalStyle />
-      <TodoTemplate>Hello World !</TodoTemplate>
+      <TodoTemplate>
+        <TodoHeader>
+          <TodoInput />
+        </TodoHeader>
+        <TodoList />
+        <AddTodoButton>추가</AddTodoButton>
+      </TodoTemplate>
     </>
   );
 }
