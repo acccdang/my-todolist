@@ -7,7 +7,7 @@
 - typescript
 - react (create-react-app boilerplate)
 
-### 사용한 의존성
+### 사용한 의존성 라이브러리
 
 - styled-component (for 'css in js')
 - eslint (for coding convention & error detect)
