@@ -25,8 +25,9 @@ const StyledAddTodoButton = styled.button`
 
 type AddTodoButtonProps = {
   children?: React.ReactNode;
+  className?: string;
 };
 
-export default function AddTodoButton({ children }: AddTodoButtonProps): React.ReactElement {
-  return <StyledAddTodoButton>{children}</StyledAddTodoButton>;
+export default function AddTodoButton({ children, ...rest }: AddTodoButtonProps): React.ReactElement {
+  return <StyledAddTodoButton {...rest}>{children}</StyledAddTodoButton>;
 }

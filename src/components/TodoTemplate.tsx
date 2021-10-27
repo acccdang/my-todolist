@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
+import AddTodoButton from "./AddTodoButton";
 
 type TodoTemplateProps = {
   children?: React.ReactNode;
@@ -21,5 +22,31 @@ const StyledTodoTemplate = styled.div`
 `;
 
 export default function TodoTemplate({ children }: TodoTemplateProps): React.ReactElement {
-  return <StyledTodoTemplate>{children}</StyledTodoTemplate>;
+  const templateRef = useRef<HTMLDivElement>(null);
+
+  const clickCallback = (ev: MouseEvent) => {
+    // bubbling
+    const eventTargetClassNames = [...(ev.target as HTMLElement).className.split(" ")];
+    const found = eventTargetClassNames.find((className) => className === "add-button");
+
+    if (found) alert("click !");
+  };
+  useEffect(() => {
+    const { current: templateCurrent } = templateRef;
+    templateCurrent?.addEventListener("click", clickCallback);
+
+    return () => {
+      const { current: templateCurrent } = templateRef;
+      templateCurrent?.removeEventListener("click", clickCallback);
+    };
+  }, []);
+
+  return (
+    <StyledTodoTemplate ref={templateRef}>
+      <>
+        {children}
+        <AddTodoButton className="add-button">추가</AddTodoButton>
+      </>
+    </StyledTodoTemplate>
+  );
 }
