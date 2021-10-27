@@ -15,9 +15,9 @@ const StyledTodoItem = styled.div`
   }
 `;
 
-type TodoItemProps = {
+interface TodoItemProps {
   title: string;
-};
+}
 
 export default function TodoItem({ title }: TodoItemProps): React.ReactElement {
   return (

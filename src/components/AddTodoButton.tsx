@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 const StyledAddTodoButton = styled.button`
@@ -23,11 +23,30 @@ const StyledAddTodoButton = styled.button`
   }
 `;
 
-type AddTodoButtonProps = {
+interface AddTodoButtonProps {
   children?: React.ReactNode;
-  className?: string;
-};
+  showAddPopup: () => void;
+}
 
-export default function AddTodoButton({ children, ...rest }: AddTodoButtonProps): React.ReactElement {
-  return <StyledAddTodoButton {...rest}>{children}</StyledAddTodoButton>;
+export default function AddTodoButton({ children, showAddPopup }: AddTodoButtonProps): React.ReactElement {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const onClick = useCallback(
+    (ev: MouseEvent) => {
+      showAddPopup();
+    },
+    [showAddPopup],
+  );
+
+  useEffect(() => {
+    const { current: buttonRefCurrent } = buttonRef;
+    buttonRefCurrent?.addEventListener("click", onClick);
+
+    return () => {
+      const { current: buttonRefCurrent } = buttonRef;
+      buttonRefCurrent?.removeEventListener("click", onClick);
+    };
+  }, [onClick]);
+
+  return <StyledAddTodoButton ref={buttonRef}>{children}</StyledAddTodoButton>;
 }

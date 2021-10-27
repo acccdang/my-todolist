@@ -1,10 +1,7 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import AddTodoButton from "./AddTodoButton";
-
-type TodoTemplateProps = {
-  children?: React.ReactNode;
-};
+import TodoAddPopup from "./TodoAddPopup";
 
 const StyledTodoTemplate = styled.div`
   display: flex;
@@ -21,31 +18,22 @@ const StyledTodoTemplate = styled.div`
   margin: 10vh auto; /* 페이지 중앙에 나타나도록 설정 */
 `;
 
+interface TodoTemplateProps {
+  children?: React.ReactNode;
+}
+
 export default function TodoTemplate({ children }: TodoTemplateProps): React.ReactElement {
-  const templateRef = useRef<HTMLDivElement>(null);
+  const [addPopupVisible, setAddPopupVisible] = useState(false);
 
-  const clickCallback = (ev: MouseEvent) => {
-    // bubbling
-    const eventTargetClassNames = [...(ev.target as HTMLElement).className.split(" ")];
-    const found = eventTargetClassNames.find((className) => className === "add-button");
-
-    if (found) alert("click !");
-  };
-  useEffect(() => {
-    const { current: templateCurrent } = templateRef;
-    templateCurrent?.addEventListener("click", clickCallback);
-
-    return () => {
-      const { current: templateCurrent } = templateRef;
-      templateCurrent?.removeEventListener("click", clickCallback);
-    };
-  }, []);
+  const showAddPopup = () => setAddPopupVisible(true);
+  const hideAddPopup = () => setAddPopupVisible(false);
 
   return (
-    <StyledTodoTemplate ref={templateRef}>
+    <StyledTodoTemplate>
       <>
         {children}
-        <AddTodoButton className="add-button">추가</AddTodoButton>
+        <AddTodoButton showAddPopup={showAddPopup}>추가</AddTodoButton>
+        <TodoAddPopup visible={addPopupVisible} hideAddPopup={hideAddPopup} />
       </>
     </StyledTodoTemplate>
   );
