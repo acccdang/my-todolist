@@ -26,14 +26,14 @@ export default function TodoTemplate({ children }: TodoTemplateProps): React.Rea
   const [addPopupVisible, setAddPopupVisible] = useState(false);
 
   const showAddPopup = () => setAddPopupVisible(true);
-  const hideAddPopup = () => setAddPopupVisible(false);
+  const closeAddPopup = () => setAddPopupVisible(false);
 
   return (
     <StyledTodoTemplate>
       <>
         {children}
         <AddTodoButton showAddPopup={showAddPopup}>추가</AddTodoButton>
-        <TodoAddPopup visible={addPopupVisible} hideAddPopup={hideAddPopup} />
+        <TodoAddPopup visible={addPopupVisible} closeAddPopup={closeAddPopup} />
       </>
     </StyledTodoTemplate>
   );

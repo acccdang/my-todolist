@@ -43,7 +43,7 @@ export default function AddTodoButton({ children, showAddPopup }: AddTodoButtonP
     buttonRefCurrent?.addEventListener("click", onClick);
 
     return () => {
-      const { current: buttonRefCurrent } = buttonRef;
+      // const { current: buttonRefCurrent } = buttonRef;
       buttonRefCurrent?.removeEventListener("click", onClick);
     };
   }, [onClick]);

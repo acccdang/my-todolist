@@ -1,53 +1,92 @@
-import React, { useRef, useCallback, useEffect } from "react";
-import styled from "styled-components";
-import TodoAdditionTemplate from "./TodoAdditionTemplate";
+import React from "react";
+import styled, { css } from "styled-components";
+import Portal from "./Portal";
+import TodoAddTemplate from "./TodoAddTemplate";
 
 interface StyledTodoAddPopupProps {
   visible: boolean;
 }
 const StyledTodoAddPopup = styled.div`
-  pointer-events: ${({ visible }: StyledTodoAddPopupProps) => (visible ? "auto" : "none")};
-  opacity: ${({ visible }: StyledTodoAddPopupProps) => (visible ? 1 : 0)};
+  ${({ visible }: StyledTodoAddPopupProps) => {
+    return css`
+      display: ${visible ? "flex" : "none"};
+    `;
+  }};
+
   position: fixed;
+  justify-content: center;
+  align-items: center;
+
   left: 0;
   top: 0;
   margin: 0;
   padding: 0;
   width: 100vw;
   height: 100vh;
+  z-index: 1000;
 
   transition: opacity 0.3s;
 `;
 const Overlay = styled.div`
+  position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: -1;
 `;
 
 interface TodoAddPopupProps {
+  className?: string;
   visible: boolean;
-  hideAddPopup: () => void;
+  closeAddPopup: () => void;
 }
 
-export default function TodoAddPopup({ visible, hideAddPopup }: TodoAddPopupProps): React.ReactElement {
-  const addPopupRef = useRef<HTMLDivElement>(null);
-
-  const onClick = useCallback((ev: MouseEvent) => hideAddPopup(), [hideAddPopup]);
-
-  useEffect(() => {
-    const { current: addPopupRefCurrent } = addPopupRef;
-    addPopupRefCurrent?.addEventListener("click", onClick);
-
-    return () => {
-      const { current: addPopupRefCurrent } = addPopupRef;
-      addPopupRefCurrent?.removeEventListener("click", onClick);
-    };
-  }, [onClick]);
+function TodoAddPopup({ className, visible, closeAddPopup }: TodoAddPopupProps): React.ReactElement {
+  const onDimmedClick = (ev: React.MouseEvent) => {
+    if (ev.target === ev.currentTarget) {
+      closeAddPopup();
+    }
+  };
 
   return (
-    <StyledTodoAddPopup ref={addPopupRef} visible={visible}>
-      <Overlay />
-      <TodoAdditionTemplate />
-    </StyledTodoAddPopup>
+    <Portal elementId="add-popup-root">
+      <StyledTodoAddPopup className={className} visible={visible}>
+        <TodoAddTemplate className={visible ? "AddPopup-show" : "AddPopup-hide"} />
+        <Overlay onClick={onDimmedClick} />
+      </StyledTodoAddPopup>
+    </Portal>
   );
 }
+
+const TodoAddPopupComponent = styled(TodoAddPopup)`
+  @keyframes slideInFromBottom {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slideOutToBottom {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+  .AddPopup-show {
+    animation-name: slideInFromBottom;
+    animation-duration: 0.3s;
+  }
+  .AddPopup-hide {
+    animation-name: slideOutToBottom;
+    animation-duration: 0.3s;
+  }
+`;
+
+export default TodoAddPopupComponent;
