@@ -51,7 +51,7 @@ function TodoAddPopup({ className, visible, closeAddPopup }: TodoAddPopupProps):
   return (
     <Portal elementId="add-popup-root">
       <StyledTodoAddPopup className={className} visible={visible}>
-        <TodoAddTemplate className={visible ? "AddPopup-show" : "AddPopup-hide"} />
+        <TodoAddTemplate className={visible ? "AddTemplate-appear" : "AddTemplate-disappear"} visible={visible} closeAddPopup={closeAddPopup} />
         <Overlay onClick={onDimmedClick} />
       </StyledTodoAddPopup>
     </Portal>
@@ -79,11 +79,11 @@ const TodoAddPopupComponent = styled(TodoAddPopup)`
       opacity: 0;
     }
   }
-  .AddPopup-show {
+  .AddTemplate-appear {
     animation-name: slideInFromBottom;
     animation-duration: 0.3s;
   }
-  .AddPopup-hide {
+  .AddTemplate-disappear {
     animation-name: slideOutToBottom;
     animation-duration: 0.3s;
   }

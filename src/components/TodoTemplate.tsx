@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { TodoProvider } from "../TodoContext";
 import AddTodoButton from "./AddTodoButton";
 import TodoAddPopup from "./TodoAddPopup";
 
@@ -29,12 +30,12 @@ export default function TodoTemplate({ children }: TodoTemplateProps): React.Rea
   const closeAddPopup = () => setAddPopupVisible(false);
 
   return (
-    <StyledTodoTemplate>
-      <>
+    <TodoProvider>
+      <StyledTodoTemplate>
         {children}
         <AddTodoButton showAddPopup={showAddPopup}>추가</AddTodoButton>
         <TodoAddPopup visible={addPopupVisible} closeAddPopup={closeAddPopup} />
-      </>
-    </StyledTodoTemplate>
+      </StyledTodoTemplate>
+    </TodoProvider>
   );
 }
