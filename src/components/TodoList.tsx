@@ -5,6 +5,7 @@ import TodoItem from "./TodoItem";
 
 const StyledTodoList = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 10px;
   width: 100%;
@@ -14,14 +15,19 @@ const StyledTodoList = styled.div`
   overflow-y: overlay;
 `;
 
+const EmptyMessage = styled.h1`
+  justify-self: center;
+  margin: auto;
+  color: darkgrey;
+`;
+
 export default function TodoList(): React.ReactElement {
   const todos = useTodoState();
 
   return (
     <StyledTodoList>
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} title={todo.title} />
-      ))}
+      {!todos.length && <EmptyMessage>등록된 할 일이 없습니다.</EmptyMessage>}
+      {todos.length > 0 && todos.map((todo) => <TodoItem key={todo.id} id={todo.id} title={todo.title} />)}
     </StyledTodoList>
   );
 }

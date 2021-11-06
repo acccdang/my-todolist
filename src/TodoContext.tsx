@@ -9,13 +9,7 @@ interface Todo {
 type Todos = Array<Todo>;
 
 // Todo Reducer 초기값 설정
-const initialTodos: Todos = [
-  {
-    id: 1,
-    title: "test",
-    done: false,
-  },
-];
+const initialTodos: Todos = [];
 
 // Todo Reducer Action 설정
 type Action = { type: "CREATE"; title: string } | { type: "REMOVE"; id: number };
@@ -24,7 +18,7 @@ type Action = { type: "CREATE"; title: string } | { type: "REMOVE"; id: number }
 function todoReducer(state: Todos, action: Action) {
   switch (action.type) {
     case "CREATE":
-      return [...state, { id: state[state.length - 1].id + 1, title: action.title, done: false }];
+      return [...state, { id: state.length > 0 ? state[state.length - 1].id + 1 : 1, title: action.title, done: false }];
     case "REMOVE":
       return state.filter((todo) => todo.id !== action.id);
     default:
